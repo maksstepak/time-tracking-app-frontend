@@ -1,1 +1,5 @@
-{}
+{
+  "global": {
+    "appName": "Time tracking app"
+  }
+}

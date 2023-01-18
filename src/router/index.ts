@@ -1,15 +1,36 @@
+import { useAuthenticationStore } from '@/stores/authentication';
 import { createRouter, createWebHistory } from 'vue-router';
-import HomeView from '../views/HomeView.vue';
+
+declare module 'vue-router' {
+  interface RouteMeta {
+    requiresAuth?: boolean;
+  }
+}
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
+  linkActiveClass: 'is-active',
   routes: [
     {
       path: '/',
       name: 'home',
-      component: HomeView,
+      component: () => import('@/views/HomeView.vue'),
+      meta: {
+        requiresAuth: true,
+      },
+    },
+    {
+      path: '/login',
+      name: 'login',
+      component: () => import('@/views/LoginView.vue'),
     },
   ],
+});
+
+router.beforeEach((to) => {
+  const authenticationStore = useAuthenticationStore();
+
+  if (to.meta.requiresAuth && !authenticationStore.isLoggedIn) return '/login';
 });
 
 export default router;

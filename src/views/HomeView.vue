@@ -1,4 +1,8 @@
-<script setup lang="ts"></script>
+<script setup lang="ts">
+import { useAuthenticationStore } from '@/stores/authentication';
+
+const authenticationStore = useAuthenticationStore();
+</script>
 <template>
-  <main></main>
+  {{ authenticationStore.user?.email }}
 </template>
