@@ -4,7 +4,6 @@ import type { LoginRequest } from '@/types/Authentication';
 import { useForm } from 'vee-validate';
 import { useI18n } from 'vue-i18n';
 import * as yup from 'yup';
-import FormTextField from '@/components/FormTextField.vue';
 import { useRouter } from 'vue-router';
 import axios from 'axios';
 import { ref, watch } from 'vue';
