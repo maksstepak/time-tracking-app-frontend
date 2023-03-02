@@ -1,11 +1,12 @@
 <script setup lang="ts">
 import UserService from '@/services/UserService';
 import type { User } from '@/types/User';
-import { onMounted } from 'vue';
+import { onMounted, ref } from 'vue';
 import { useDataTable } from '@/composables/dataTable';
 import type { DataTableHeader } from '@/types/DataTable';
 import { useI18n } from 'vue-i18n';
 import dayjs from 'dayjs';
+import UserCreateModal from '@/components/UserCreateModal.vue';
 
 const { t } = useI18n();
 
@@ -29,8 +30,19 @@ const headers: DataTableHeader[] = [
   { key: 'actions', label: t('actions') },
 ];
 
+const isCreateModalShown = ref(false);
+
 const openAddUserModal = () => {
-  // TODO
+  isCreateModalShown.value = true;
+};
+
+const closeAddUserModal = () => {
+  isCreateModalShown.value = false;
+};
+
+const onSuccessCreateUser = async () => {
+  closeAddUserModal();
+  await fetch();
 };
 
 const openEditModal = (id: number) => {
@@ -89,6 +101,11 @@ onMounted(async () => {
     :total-items="totalItems"
     :last-page="lastPage"
     @set-page="setPage"
+  />
+  <UserCreateModal
+    v-if="isCreateModalShown"
+    @close="closeAddUserModal"
+    @success="onSuccessCreateUser"
   />
 </template>
 

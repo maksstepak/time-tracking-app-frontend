@@ -52,7 +52,7 @@ const onSubmit = handleSubmit(async (values, actions) => {
         <div v-if="errorMessage" class="notification is-danger">
           {{ t(`errors.${errorMessage}`) }}
         </div>
-        <FormTextField name="email" type="text" :label="t('email')" />
+        <FormTextField name="email" type="email" :label="t('email')" />
         <FormTextField name="password" type="password" :label="t('password')" />
         <button
           type="submit"
