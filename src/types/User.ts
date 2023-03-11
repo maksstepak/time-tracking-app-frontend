@@ -17,8 +17,8 @@ export interface CreateUserRequest {
 }
 
 export interface UpdateUserRequest {
-  email: string;
   name: string;
+  password: string | null;
   isAdmin: boolean;
   jobTitle: string | null;
 }

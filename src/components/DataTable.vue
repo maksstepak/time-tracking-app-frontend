@@ -6,7 +6,7 @@ import { useI18n } from 'vue-i18n';
 const props = defineProps<{
   loading: boolean;
   headers: DataTableHeader[];
-  items: { [key: string]: any }[];
+  items: any[];
 }>();
 
 const { t } = useI18n();

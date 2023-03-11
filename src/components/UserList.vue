@@ -7,6 +7,8 @@ import type { DataTableHeader } from '@/types/DataTable';
 import { useI18n } from 'vue-i18n';
 import dayjs from 'dayjs';
 import UserCreateModal from '@/components/UserCreateModal.vue';
+import UserEditModal from '@/components/UserEditModal.vue';
+import UserDeleteModal from '@/components/UserDeleteModal.vue';
 
 const { t } = useI18n();
 
@@ -31,28 +33,52 @@ const headers: DataTableHeader[] = [
 ];
 
 const isCreateModalShown = ref(false);
+const isEditModalShown = ref(false);
+const isDeleteModalShown = ref(false);
+const editedUser = ref<User | null>(null);
+const deletedUser = ref<User | null>(null);
 
-const openAddUserModal = () => {
+const openCreateModal = () => {
   isCreateModalShown.value = true;
 };
 
-const closeAddUserModal = () => {
+const closeCreateModal = () => {
   isCreateModalShown.value = false;
 };
 
 const onSuccessCreateUser = async () => {
-  closeAddUserModal();
+  closeCreateModal();
   await fetch();
 };
 
-const openEditModal = (id: number) => {
-  console.log(id);
-  // TODO
+const openEditModal = async (user: User) => {
+  editedUser.value = user;
+  isEditModalShown.value = true;
 };
 
-const openDeleteModal = (id: number) => {
-  console.log(id);
-  // TODO
+const closeEditModal = () => {
+  isEditModalShown.value = false;
+  editedUser.value = null;
+};
+
+const onSuccessEditUser = async () => {
+  closeEditModal();
+  await fetch();
+};
+
+const openDeleteModal = (user: User) => {
+  deletedUser.value = user;
+  isDeleteModalShown.value = true;
+};
+
+const closeDeleteModal = () => {
+  isDeleteModalShown.value = false;
+  deletedUser.value = null;
+};
+
+const onSuccessDeleteUser = async () => {
+  closeDeleteModal();
+  await fetch();
 };
 
 onMounted(async () => {
@@ -62,7 +88,7 @@ onMounted(async () => {
 
 <template>
   <div class="is-flex is-justify-content-flex-end">
-    <button @click="openAddUserModal" class="button is-success">
+    <button @click="openCreateModal" class="button is-success">
       <span class="icon is-small">
         <i class="fas fa-user-plus"></i>
       </span>
@@ -83,12 +109,12 @@ onMounted(async () => {
     </template>
     <template v-slot:item-actions="{ item }">
       <div class="buttons">
-        <button @click="openEditModal(item.id)" class="button is-success">
+        <button @click="openEditModal(item)" class="button is-success">
           <span class="icon is-small">
             <i class="fas fa-pen"></i>
           </span>
         </button>
-        <button @click="openDeleteModal(item.id)" class="button is-danger">
+        <button @click="openDeleteModal(item)" class="button is-danger">
           <span class="icon is-small">
             <i class="fas fa-trash-can"></i>
           </span>
@@ -104,8 +130,20 @@ onMounted(async () => {
   />
   <UserCreateModal
     v-if="isCreateModalShown"
-    @close="closeAddUserModal"
+    @close="closeCreateModal"
     @success="onSuccessCreateUser"
+  />
+  <UserEditModal
+    v-if="isEditModalShown"
+    :user="editedUser!"
+    @close="closeEditModal"
+    @success="onSuccessEditUser"
+  />
+  <UserDeleteModal
+    v-if="isDeleteModalShown"
+    :user="deletedUser!"
+    @close="closeDeleteModal"
+    @success="onSuccessDeleteUser"
   />
 </template>
 
