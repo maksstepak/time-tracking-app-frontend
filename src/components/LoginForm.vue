@@ -4,7 +4,6 @@ import type { LoginRequest } from '@/types/Authentication';
 import { useForm } from 'vee-validate';
 import { useI18n } from 'vue-i18n';
 import * as yup from 'yup';
-import FormTextField from '@/components/FormTextField.vue';
 import { useRouter } from 'vue-router';
 import axios from 'axios';
 import { ref, watch } from 'vue';
@@ -53,7 +52,7 @@ const onSubmit = handleSubmit(async (values, actions) => {
         <div v-if="errorMessage" class="notification is-danger">
           {{ t(`errors.${errorMessage}`) }}
         </div>
-        <FormTextField name="email" type="text" :label="t('email')" />
+        <FormTextField name="email" type="email" :label="t('email')" />
         <FormTextField name="password" type="password" :label="t('password')" />
         <button
           type="submit"

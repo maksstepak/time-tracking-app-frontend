@@ -48,6 +48,11 @@ const toggleMobileMenu = () => {
     >
       <div class="navbar-start">
         <router-link to="/" class="navbar-item"> {{ t('home') }} </router-link>
+        <template v-if="authenticationStore.user?.isAdmin">
+          <router-link to="/users" class="navbar-item">
+            {{ t('users') }}
+          </router-link>
+        </template>
       </div>
 
       <div class="navbar-end">
@@ -72,7 +77,8 @@ const toggleMobileMenu = () => {
 {
   "en": {
     "home": "Home",
-    "logOut": "Log out"
+    "logOut": "Log out",
+    "users": "Users"
   }
 }
 </i18n>
