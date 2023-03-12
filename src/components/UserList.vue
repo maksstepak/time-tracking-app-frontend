@@ -9,8 +9,11 @@ import dayjs from 'dayjs';
 import UserCreateModal from '@/components/UserCreateModal.vue';
 import UserEditModal from '@/components/UserEditModal.vue';
 import UserDeleteModal from '@/components/UserDeleteModal.vue';
+import { useNotificationStore } from '@/stores/notification';
+import { NotificationType } from '@/types/Notification';
 
 const { t } = useI18n();
+const notificationStore = useNotificationStore();
 
 const {
   items,
@@ -48,6 +51,10 @@ const closeCreateModal = () => {
 
 const onSuccessCreateUser = async () => {
   closeCreateModal();
+  notificationStore.display(
+    t('notifications.userCreated'),
+    NotificationType.Success
+  );
   await fetch();
 };
 
@@ -63,6 +70,10 @@ const closeEditModal = () => {
 
 const onSuccessEditUser = async () => {
   closeEditModal();
+  notificationStore.display(
+    t('notifications.userUpdated'),
+    NotificationType.Success
+  );
   await fetch();
 };
 
@@ -78,6 +89,10 @@ const closeDeleteModal = () => {
 
 const onSuccessDeleteUser = async () => {
   closeDeleteModal();
+  notificationStore.display(
+    t('notifications.userDeleted'),
+    NotificationType.Success
+  );
   await fetch();
 };
 
@@ -160,6 +175,11 @@ onMounted(async () => {
     "roles": {
       "user": "User",
       "admin": "Admin"
+    },
+    "notifications": {
+      "userCreated": "User has been successfully created.",
+      "userUpdated": "User has been successfully updated.",
+      "userDeleted": "User has been successfully deleted."
     }
   }
 }
