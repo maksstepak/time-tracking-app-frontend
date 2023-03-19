@@ -11,9 +11,9 @@ const emit = defineEmits(['close', 'success']);
 
 const schema = yup.object({
   email: yup.string().required().email().label(t('email')),
-  name: yup.string().required().label(t('name')),
+  name: yup.string().required().max(64).label(t('name')),
   password: yup.string().required().min(8).label(t('password')),
-  jobTitle: yup.string().nullable().label(t('jobTitle')),
+  jobTitle: yup.string().nullable().max(64).label(t('jobTitle')),
   isAdmin: yup.boolean().required().label(t('isAdmin')),
 });
 

@@ -10,10 +10,10 @@ const { t } = useI18n();
 const emit = defineEmits(['close', 'success']);
 
 const schema = yup.object({
-  name: yup.string().required().label(t('name')),
-  description: yup.string().nullable().label(t('description')),
-  contactEmail: yup.string().nullable().label(t('contactEmail')),
-  contactPhone: yup.string().nullable().label(t('contactPhone')),
+  name: yup.string().required().max(64).label(t('name')),
+  description: yup.string().nullable().max(10000).label(t('description')),
+  contactEmail: yup.string().nullable().max(255).label(t('contactEmail')),
+  contactPhone: yup.string().nullable().max(255).label(t('contactPhone')),
 });
 
 const { handleSubmit, isSubmitting } = useForm<CreateClientRequest>({
