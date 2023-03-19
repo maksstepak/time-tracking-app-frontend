@@ -38,7 +38,7 @@ describe('ClientCreateModal', () => {
     });
   });
 
-  it('should display a validation error when the email field is invalid', async () => {
+  it('should display a validation error when the name field is invalid', async () => {
     const wrapper = mount(ClientCreateModal, {
       global: {
         plugins: [createTestingPinia()],
