@@ -52,6 +52,9 @@ const toggleMobileMenu = () => {
           <router-link to="/users" class="navbar-item">
             {{ t('users') }}
           </router-link>
+          <router-link to="/clients" class="navbar-item">
+            {{ t('clients') }}
+          </router-link>
         </template>
       </div>
 
@@ -78,7 +81,8 @@ const toggleMobileMenu = () => {
   "en": {
     "home": "Home",
     "logOut": "Log out",
-    "users": "Users"
+    "users": "Users",
+    "clients": "Clients"
   }
 }
 </i18n>

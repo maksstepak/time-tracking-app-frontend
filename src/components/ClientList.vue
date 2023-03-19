@@ -1,16 +1,16 @@
 <script setup lang="ts">
-import UserService from '@/services/UserService';
-import type { User } from '@/types/User';
-import { onMounted, ref } from 'vue';
 import { useDataTable } from '@/composables/dataTable';
+import ClientService from '@/services/ClientService';
+import { useNotificationStore } from '@/stores/notification';
+import type { Client } from '@/types/Client';
 import type { DataTableHeader } from '@/types/DataTable';
+import { onMounted, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 import dayjs from 'dayjs';
-import UserCreateModal from '@/components/UserCreateModal.vue';
-import UserEditModal from '@/components/UserEditModal.vue';
-import UserDeleteModal from '@/components/UserDeleteModal.vue';
-import { useNotificationStore } from '@/stores/notification';
 import { NotificationType } from '@/types/Notification';
+import ClientCreateModal from '@/components/ClientCreateModal.vue';
+import ClientEditModal from '@/components/ClientEditModal.vue';
+import ClientDeleteModal from '@/components/ClientDeleteModal.vue';
 
 const { t } = useI18n();
 const notificationStore = useNotificationStore();
@@ -24,13 +24,10 @@ const {
   lastPage,
   fetch,
   setPage,
-} = useDataTable<User>(UserService.getList);
+} = useDataTable<Client>(ClientService.getList);
 
 const headers: DataTableHeader[] = [
-  { key: 'email', label: t('email') },
   { key: 'name', label: t('name') },
-  { key: 'jobTitle', label: t('jobTitle') },
-  { key: 'role', label: t('role') },
   { key: 'createdAt', label: t('dateCreated') },
   { key: 'actions', label: t('actions') },
 ];
@@ -38,8 +35,8 @@ const headers: DataTableHeader[] = [
 const isCreateModalShown = ref(false);
 const isEditModalShown = ref(false);
 const isDeleteModalShown = ref(false);
-const editedUser = ref<User | null>(null);
-const deletedUser = ref<User | null>(null);
+const editedClient = ref<Client | null>(null);
+const deletedClient = ref<Client | null>(null);
 
 const openCreateModal = () => {
   isCreateModalShown.value = true;
@@ -52,45 +49,45 @@ const closeCreateModal = () => {
 const onSuccessCreate = async () => {
   closeCreateModal();
   notificationStore.display(
-    t('notifications.userCreated'),
+    t('notifications.clientCreated'),
     NotificationType.Success
   );
   await fetch();
 };
 
-const openEditModal = async (user: User) => {
-  editedUser.value = user;
+const openEditModal = async (client: Client) => {
+  editedClient.value = client;
   isEditModalShown.value = true;
 };
 
 const closeEditModal = () => {
   isEditModalShown.value = false;
-  editedUser.value = null;
+  editedClient.value = null;
 };
 
 const onSuccessEdit = async () => {
   closeEditModal();
   notificationStore.display(
-    t('notifications.userUpdated'),
+    t('notifications.clientUpdated'),
     NotificationType.Success
   );
   await fetch();
 };
 
-const openDeleteModal = (user: User) => {
-  deletedUser.value = user;
+const openDeleteModal = (client: Client) => {
+  deletedClient.value = client;
   isDeleteModalShown.value = true;
 };
 
 const closeDeleteModal = () => {
   isDeleteModalShown.value = false;
-  deletedUser.value = null;
+  deletedClient.value = null;
 };
 
 const onSuccessDelete = async () => {
   closeDeleteModal();
   notificationStore.display(
-    t('notifications.userDeleted'),
+    t('notifications.clientDeleted'),
     NotificationType.Success
   );
   await fetch();
@@ -107,18 +104,10 @@ onMounted(async () => {
       <span class="icon is-small">
         <i class="fas fa-user-plus"></i>
       </span>
-      <span>{{ t('addNewUser') }}</span>
+      <span>{{ t('addNewClient') }}</span>
     </button>
   </div>
   <DataTable class="mt-5" :headers="headers" :items="items" :loading="loading">
-    <template v-slot:item-role="{ item }">
-      <div>
-        <span v-if="item.isAdmin" class="tag is-primary">{{
-          t('roles.admin')
-        }}</span>
-        <span v-else class="tag is-info">{{ t('roles.user') }}</span>
-      </div>
-    </template>
     <template v-slot:item-createdAt="{ item }">
       {{ dayjs(item.createdAt).format('YYYY-MM-DD HH:mm') }}
     </template>
@@ -143,20 +132,20 @@ onMounted(async () => {
     :last-page="lastPage"
     @set-page="setPage"
   />
-  <UserCreateModal
+  <ClientCreateModal
     v-if="isCreateModalShown"
     @close="closeCreateModal"
     @success="onSuccessCreate"
   />
-  <UserEditModal
+  <ClientEditModal
     v-if="isEditModalShown"
-    :user="editedUser!"
+    :client="editedClient!"
     @close="closeEditModal"
     @success="onSuccessEdit"
   />
-  <UserDeleteModal
+  <ClientDeleteModal
     v-if="isDeleteModalShown"
-    :user="deletedUser!"
+    :client="deletedClient!"
     @close="closeDeleteModal"
     @success="onSuccessDelete"
   />
@@ -165,21 +154,14 @@ onMounted(async () => {
 <i18n lang="json">
 {
   "en": {
-    "email": "Email",
     "name": "Name",
-    "jobTitle": "Job title",
-    "role": "Role",
     "dateCreated": "Date created",
     "actions": "Actions",
-    "addNewUser": "Add new user",
-    "roles": {
-      "user": "User",
-      "admin": "Admin"
-    },
+    "addNewClient": "Add new client",
     "notifications": {
-      "userCreated": "User has been successfully created.",
-      "userUpdated": "User has been successfully updated.",
-      "userDeleted": "User has been successfully deleted."
+      "clientCreated": "Client has been successfully created.",
+      "clientUpdated": "Client has been successfully updated.",
+      "clientDeleted": "Client has been successfully deleted."
     }
   }
 }
