@@ -4,6 +4,7 @@ import type {
   UpdateClientRequest,
 } from '@/types/Client';
 import type { DataTableRequest, DataTableResponse } from '@/types/DataTable';
+import type { SelectOption } from '@/types/SelectOption';
 import apiClient from '@/utils/apiClient';
 
 export default class ClientService {
@@ -34,5 +35,12 @@ export default class ClientService {
 
   static async delete(id: number): Promise<void> {
     await apiClient.delete(`/clients/${id}`);
+  }
+
+  static async getSelectOptions(): Promise<SelectOption[]> {
+    const { data } = await apiClient.get<SelectOption[]>(
+      '/clients/select-options'
+    );
+    return data;
   }
 }
